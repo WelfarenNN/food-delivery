@@ -39,28 +39,34 @@ export const Login = () => {
           {/* Форм (Оролтууд) */}
           <div className="flex flex-col gap-4 mt-2">
             <div className="flex flex-col gap-2">
+              <Label
+                htmlFor="email"
+                className="text-sm text-gray-900 font-medium"
+              ></Label>
               <Input
+                id="email"
                 type="email"
                 placeholder="Enter your email address"
-                className="w-full h-12 px-4 border border-gray-200 rounded-lg placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300"
+                className="h-9 border-zinc-200 focus-visible:ring-1 focus-visible:ring-zinc-400"
               />
             </div>
 
             <div className="flex flex-col gap-2 relative">
               <Input
+                id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="w-full h-12 px-4 border border-gray-200 rounded-lg placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300"
+                className="h-9 border-zinc-200 focus-visible:ring-1 focus-visible:ring-zinc-400"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 "
               >
                 {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
+                  <EyeOff className="w-5 h-5 " />
                 ) : (
-                  <Eye className="w-5 h-5" />
+                  <Eye className="w-5 h-5 " />
                 )}
               </button>
             </div>
@@ -72,7 +78,7 @@ export const Login = () => {
           </div>
 
           {/* Үндсэн товч */}
-          <Button className="w-full h-12 mt-2 bg-[#D1D1D6] hover:bg-gray-400 text-white font-medium rounded-lg transition-colors">
+          <Button className="w-full h-9 mt-2 bg-[#D1D1D6] hover:bg-gray-600 text-white font-medium rounded-lg transition-colors">
             Let&apos;s Go
           </Button>
 
@@ -88,16 +94,16 @@ export const Login = () => {
 
       {/* БАРУУН ТАЛ: ЗУРАГТ ХЭСЭГ */}
       <div className="hidden md:block p-6 relative h-full">
-  <div className="relative w-full h-full overflow-hidden rounded-2xl">
-    <img
-      src="/food-delivery.png"
-      alt="Delivery Background"
-      fill
-      priority
-      className="object-cover"
-    />
-  </div>
-</div>
+        <div className="relative w-full h-full overflow-hidden rounded-2xl">
+          <img
+            src="/food-delivery.png"
+            alt="Delivery Background"
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
+      </div>
     </div>
   );
 };
