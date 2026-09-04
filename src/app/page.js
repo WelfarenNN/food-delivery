@@ -1,6 +1,10 @@
 import Image from "next/image";
-import { Login } from "./auth/login/page";
+import { Login } from "@/app/auth/login/page";
 
 export default function Home() {
-  return <Login />;
+  return (
+    <div className="w-full flex ">
+      <Login />
+    </div>
+  );
 }
