@@ -1,12 +1,8 @@
 "use client";
 
-import {LoginForm} from "./Features/login-form";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import {LoginForm} from "../login/Features//login-form"
 
 export const Login = () => {
-  const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="w-full flex items-center justify-center">

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { CardContent } from "@/components/ui/card";
-import { FieldError } from "./Components/field-error";
+import { FieldError } from "../Components/field-error";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
