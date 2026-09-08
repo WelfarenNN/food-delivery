@@ -12,6 +12,7 @@ import { FieldError } from "../Components/field-error";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { server } from "@/app/_api/api";
 
 const loginSchema = z.object({
   email: z
