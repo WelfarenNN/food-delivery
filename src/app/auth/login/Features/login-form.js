@@ -13,7 +13,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// 1. Zod Схем тодорхойлох (Цэвэр JavaScript)
 const loginSchema = z.object({
   email: z
     .string()
@@ -30,7 +29,6 @@ export const LoginForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
-  // 2. React Hook Form тохируулга
   const {
     register,
     handleSubmit,
@@ -43,10 +41,9 @@ export const LoginForm = () => {
     },
   });
 
-  // 3. Form илгээх функц
   const onSubmit = (data) => {
     console.log("Form Data Submitted:", data);
-    // Энд нэвтрэх API хүсэлтээ бичнэ
+    
   };
 
   return (
@@ -88,7 +85,7 @@ export const LoginForm = () => {
                     type="email"
                     className="w-full h-9"
                     placeholder="Enter your email address"
-                    {...register("email")} // <-- Хуучны html required-ийн оронд register ашиглана
+                    {...register("email")} 
                   />
                   {errors.email?.message && (
                     <FieldError message={errors.email.message} />
@@ -104,7 +101,7 @@ export const LoginForm = () => {
                       type={showPassword ? "text" : "password"}
                       className="w-full h-9 pr-10"
                       placeholder="Password"
-                      {...register("password")} // <-- Register холболт
+                      {...register("password")} 
                     />
                     <button
                       type="button"
