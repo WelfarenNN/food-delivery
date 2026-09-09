@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { CardContent } from "@/components/ui/card";
 import { FieldError } from "../Components/field-error";
+import Link from "next/link";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -20,13 +21,10 @@ const loginSchema = z.object({
     .trim()
     .min(1, "Email is required.")
     .email("Invalid email. Use a format like example@email.com."),
-  password: z
-    .string()
-    .trim()
-    .min(6, "Incorrect password. Please try again."),
+  password: z.string().trim().min(6, "Incorrect password. Please try again."),
 });
 
-export const LoginForm = () => {
+export default function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -42,9 +40,17 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Data Submitted:", data);
-    
+  const onSubmit = async (data) => {
+    try {
+      const response = await server.post("/auth/login", data);
+
+      if (response.data?.token) {
+        localStorage.setItem("User", response.data.user);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Login Error", error);
+    }
   };
 
   return (
@@ -76,8 +82,10 @@ export const LoginForm = () => {
           <div className="flex flex-col gap-4 mt-2">
             <CardContent className="p-0">
               {/* 4. handleSubmit холбох */}
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-                
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-6"
+              >
                 {/* Email Input */}
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
@@ -86,10 +94,10 @@ export const LoginForm = () => {
                     type="email"
                     className="w-full h-9"
                     placeholder="Enter your email address"
-                    {...register("email")} 
+                    {...register("email")}
                   />
                   {errors.email?.message && (
-                    <FieldError message={errors.email.message} />
+                    <FieldError message={errors.email?.message} />
                   )}
                 </div>
 
@@ -102,13 +110,15 @@ export const LoginForm = () => {
                       type={showPassword ? "text" : "password"}
                       className="w-full h-9 pr-10"
                       placeholder="Password"
-                      {...register("password")} 
+                      {...register("password")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -118,13 +128,13 @@ export const LoginForm = () => {
                     </button>
                   </div>
                   {errors.password?.message && (
-                    <FieldError message={errors.password.message} />
+                    <FieldError message={errors.password?.message} />
                   )}
                 </div>
 
                 {/* Нэвтрэх товч */}
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isSubmitting}
                   className="w-full h-9 mt-2 bg-[#000000] hover:bg-[#494949] text-white font-medium rounded-lg transition-colors"
                 >
@@ -133,8 +143,8 @@ export const LoginForm = () => {
               </form>
             </CardContent>
 
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="text-left inline-block text-sm underline-offset-4 hover:underline cursor-pointer"
             >
               Forgot password?
@@ -143,9 +153,12 @@ export const LoginForm = () => {
 
           <div className="flex gap-1.5 items-center justify-center text-sm mt-2">
             <span className="text-gray-500">Don&apos;t have an account?</span>
-            <button type="button" className="text-[#007AFF] font-medium hover:underline">
+            <Link
+              href="/sign-up"
+              className="font-medium text-[#2563EB] hover:underline"
+            >
               Sign up
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -154,7 +167,7 @@ export const LoginForm = () => {
       <div className="hidden md:block p-6 relative h-full">
         <div className="relative w-full h-full overflow-hidden rounded-2xl">
           <Image
-            src="/food-delivery.png"
+            src="/Biker.png"
             alt="Delivery Background"
             fill
             priority
@@ -164,4 +177,4 @@ export const LoginForm = () => {
       </div>
     </div>
   );
-};
+}
