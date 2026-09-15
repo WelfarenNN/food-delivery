@@ -1,32 +1,35 @@
 "use client";
-import Image from "next/image";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, Eye, EyeOff } from "lucide-react";
-import { CardContent } from "@/components/ui/card";
-import { FieldError } from "../Components/field-error";
-import Link from "next/link";
 
-import { z } from "zod";
+import { useState } from "react";
+import Link from "next/link";
+import { Eye, EyeOff, ChevronLeft } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { FieldError } from "../Components/field-error";
 import { server } from "@/app/_api/api";
 
 const loginSchema = z.object({
   email: z
     .string()
     .trim()
-    .min(1, "Email is required.")
-    .email("Invalid email. Use a format like example@email.com."),
+    .min(1, "Email is required")
+    .email("Please enter a valid email"),
+
   password: z.string().trim().min(6, "Incorrect password. Please try again."),
 });
 
 export default function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const {
     register,
@@ -34,141 +37,161 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (data) => {
-    try {
-      const response = await server.post("/auth/login", data);
+  const clearMessages = () => {
+    setServerError("");
+    setSuccessMessage("");
+  };
 
-      if (response.data?.token) {
-        localStorage.setItem("User", response.data.user);
-        router.push("/");
+  const onSubmit = async (data) => {
+    clearMessages();
+
+    try {
+      const response = await server.post("/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
+
+      if (!response.data?.user?.email) {
+        setServerError("Unexpected server response");
+        return;
       }
+
+      setSuccessMessage("Email and password verified successfully.");
     } catch (error) {
-      console.error("Login Error", error);
+      const message = error.response?.data?.message;
+
+      if (typeof message === "string") {
+        setServerError(message);
+      } else if (error.code === "ECONNABORTED" || error.code === "ETIMEDOUT") {
+        setServerError("Request timed out. Please try again.");
+      } else if (error.response) {
+        setServerError("Login failed. Please try again.");
+      } else {
+        setServerError(
+          "Cannot connect to the server. Check that the back-end is running.",
+        );
+      }
     }
   };
 
   return (
-    <div className="w-full h-screen grid grid-cols-1 md:grid-cols-2 bg-white">
-      {/* Нэвтрэх хэсэг */}
-      <div className="flex flex-col justify-center items-center px-8 md:px-16 lg:px-24">
-        <div className="w-full max-w-104 flex flex-col gap-6">
-          {/* Буцах товч */}
-          <div className="self-start">
-            <button
+    <div className="flex min-h-screen">
+      <div className="flex w-full items-center justify-center px-6 lg:w-1/2">
+        <div className="w-full max-w-sm">
+          <div>
+            <Button
               type="button"
+              variant="outline"
+              size="icon"
+              className="mb-4"
+              aria-label="Go back"
               onClick={() => router.back()}
-              className="p-2 border rounded-lg border-gray-200 hover:bg-gray-50 transition-colors"
             >
-              <ChevronLeft className="w-4 h-4 text-gray-600" />
-            </button>
+              <ChevronLeft size={18} />
+            </Button>
+            <h1 className="text-2xl font-bold">Log in</h1>
           </div>
 
-          {/* Header */}
-          <div className="flex flex-col gap-2 mt-4">
-            <h2 className="text-[32px] font-bold text-gray-900 tracking-tight">
-              Log in
-            </h2>
-            <p className="text-gray-500 text-[16px]">
-              Log in to enjoy your favorite dishes.
-            </p>
-          </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Log in to enjoy your favorite meals.
+          </p>
 
-          <div className="flex flex-col gap-4 mt-2">
-            <CardContent className="p-0">
-              {/* 4. handleSubmit холбох */}
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-6"
-              >
-                {/* Email Input */}
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    className="w-full h-9"
-                    placeholder="Enter your email address"
-                    {...register("email")}
-                  />
-                  {errors.email?.message && (
-                    <FieldError message={errors.email?.message} />
-                  )}
-                </div>
+          <form
+            onSubmit={handleSubmit(onSubmit, clearMessages)}
+            onChange={clearMessages}
+            className="mt-8 space-y-4"
+            noValidate
+            aria-busy={isSubmitting}
+          >
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                autoComplete="email"
+                placeholder="Enter your email"
+                disabled={isSubmitting}
+                aria-invalid={Boolean(errors.email)}
+                {...register("email")}
+              />
+              <FieldError message={errors.email?.message} />
+            </div>
 
-                {/* Password Input */}
-                <div className="grid w-full gap-1.5">
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      className="w-full h-9 pr-10"
-                      placeholder="Password"
-                      {...register("password")}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
-                      aria-label={
-                        showPassword ? "Hide password" : "Show password"
-                      }
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
-                    </button>
-                  </div>
-                  {errors.password?.message && (
-                    <FieldError message={errors.password?.message} />
-                  )}
-                </div>
-
-                {/* Нэвтрэх товч */}
-                <Button
-                  type="submit"
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
+                  className="pr-10"
                   disabled={isSubmitting}
-                  className="w-full h-9 mt-2 bg-[#000000] hover:bg-[#494949] text-white font-medium rounded-lg transition-colors"
+                  aria-invalid={Boolean(errors.password)}
+                  {...register("password")}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-0 top-0 h-10 w-10 text-muted-foreground hover:bg-transparent"
                 >
-                  {isSubmitting ? "Loading..." : "Let's Go"}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="w-4 h-4" />}
+                  <span className="sr-only">
+                    {showPassword ? "Hide password" : "Show password"}
+                  </span>
                 </Button>
-              </form>
-            </CardContent>
+              </div>
+              <FieldError message={errors.password?.message} />
+            </div>
 
-            <button
-              type="button"
-              className="text-left inline-block text-sm underline-offset-4 hover:underline cursor-pointer"
+            {serverError && (
+              <p
+                role="alert"
+                className="text-sm text-[#EF4444] dark:text-red-400"
+              >
+                {serverError}
+              </p>
+            )}
+            {successMessage && (
+              <p
+                role="status"
+                className="text-sm text-green-700 dark:text-green-400"
+              >
+                {successMessage}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              className="h-10 w-full"
+              disabled={isSubmitting}
             >
-              Forgot password?
-            </button>
-          </div>
+              {isSubmitting ? "Logging in..." : "Log in"}
+            </Button>
+          </form>
 
-          <div className="flex gap-1.5 items-center justify-center text-sm mt-2">
-            <span className="text-gray-500">Don&apos;t have an account?</span>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
             <Link
-              href="/sign-up"
+              href="/signup"
               className="font-medium text-[#2563EB] hover:underline"
             >
               Sign up
             </Link>
-          </div>
+          </p>
         </div>
       </div>
 
-      {/* Баруун талын зураг */}
-      <div className="hidden md:block p-6 relative h-full">
-        <div className="relative w-full h-full overflow-hidden rounded-2xl">
+      <div className="hidden w-1/2 p-4 lg:block">
+        <div className="relative h-full w-full overflow-hidden rounded-xl">
           <Image
             src="/Biker.png"
-            alt="Delivery Background"
+            alt="Login"
             fill
             priority
             className="object-cover"
