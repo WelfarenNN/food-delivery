@@ -1,4 +1,4 @@
-import LoginForm from "../login/Features/login-form";
+import LoginForm from "./_features/login-form";
 
 export default function LoginPage() {
   return <LoginForm />;

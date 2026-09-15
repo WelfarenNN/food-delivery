@@ -15,6 +15,7 @@ export default function StepTwo({
   handleSubmit,
   onBack,
   onSubmit,
+  serverError,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -31,13 +32,15 @@ export default function StepTwo({
             <ChevronLeft size={18} />
           </Button>
 
-          <h1 className="text-2xl font-bold">Complete your profile</h1>
+          <h1 className="text-2xl font-bold">Create a strong password</h1>
 
-          <p className="mt-2 text-sm text-muted-foreground"></p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Create a strong password with letters, numbers.
+          </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password"></Label>
+              <Label htmlFor="password">Password</Label>
 
               <Input
                 id="password"
@@ -54,7 +57,7 @@ export default function StepTwo({
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword"></Label>
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
 
               <Input
                 id="confirmPassword"
@@ -79,12 +82,22 @@ export default function StepTwo({
                 id="show-password"
                 checked={showPassword}
                 onCheckedChange={(checked) => setShowPassword(checked === true)}
+                className="rounded-sm border border-input"
               />
 
               <Label htmlFor="show-password" className="font-normal">
                 Show password
               </Label>
             </div>
+
+            {serverError && (
+              <p
+                role="alert"
+                className="text-sm text-center text-destructive font-medium pt-1"
+              >
+                {serverError}
+              </p>
+            )}
 
             <Button type="submit" className="h-10 w-full">
               Lets go

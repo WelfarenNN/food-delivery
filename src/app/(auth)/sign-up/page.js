@@ -8,8 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { server } from "@/app/_api/api";
 
-import StepOne from "./Features/step-one";
-import StepTwo from "./Features/step-two";
+import StepOne from "./_features/step-one";
+import StepTwo from "./_features/step-two";
 
 const signupSchema = z
   .object({
@@ -28,7 +28,7 @@ const signupSchema = z
     path: ["confirmPassword"],
   });
 
-export default function SignupPage() {
+export default function SignUpPage() {
   const router = useRouter();
 
   const [step, setStep] = useState(1);
@@ -76,12 +76,6 @@ export default function SignupPage() {
 
   return (
     <>
-      {serverError && (
-        <p role="alert" className="px-6 pt-4 text-center text-sm text-red-500">
-          {serverError}
-        </p>
-      )}
-
       {step === 1 && (
         <StepOne register={register} errors={errors} onNext={nextStep} />
       )}
@@ -91,6 +85,7 @@ export default function SignupPage() {
           register={register}
           errors={errors}
           handleSubmit={handleSubmit}
+          serverError={serverError}
           onBack={() => {
             setServerError("");
             setStep(1);

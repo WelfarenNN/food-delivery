@@ -12,7 +12,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FieldError } from "../Components/field-error";
+import { FieldError } from "../_components/field-error";
 import { server } from "@/app/_api/api";
 
 const loginSchema = z.object({
@@ -29,7 +29,6 @@ export default function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
   const {
     register,
@@ -42,7 +41,6 @@ export default function LoginForm() {
 
   const clearMessages = () => {
     setServerError("");
-    setSuccessMessage("");
   };
 
   const onSubmit = async (data) => {
@@ -59,7 +57,7 @@ export default function LoginForm() {
         return;
       }
 
-      setSuccessMessage("Email and password verified successfully.");
+      router.push("/")
     } catch (error) {
       const message = error.response?.data?.message;
 
@@ -140,7 +138,11 @@ export default function LoginForm() {
                   onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-0 top-0 h-10 w-10 text-muted-foreground hover:bg-transparent"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                   <span className="sr-only">
                     {showPassword ? "Hide password" : "Show password"}
                   </span>
@@ -157,14 +159,6 @@ export default function LoginForm() {
                 {serverError}
               </p>
             )}
-            {successMessage && (
-              <p
-                role="status"
-                className="text-sm text-green-700 dark:text-green-400"
-              >
-                {successMessage}
-              </p>
-            )}
 
             <Button
               type="submit"
@@ -178,7 +172,7 @@ export default function LoginForm() {
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
             <Link
-              href="/signup"
+              href="/sign-up"
               className="font-medium text-[#2563EB] hover:underline"
             >
               Sign up

@@ -24,7 +24,7 @@ export default function StepOne({ register, errors, onNext }) {
             type="button"
             variant="outline"
             size="icon"
-            className="mb-4"
+            className="rounded size-4"
             onClick={() => router.back()}
           >
             <ChevronLeft size={18} />
