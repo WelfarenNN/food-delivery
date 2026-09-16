@@ -1,5 +1,8 @@
-import SideBar from "./_components/sidebar";
 
-export default function AdminLayout() {
-  return <SideBar />;
+export default function AdminLayout({ children }) {
+  return (
+    <main className="min-h-screen bg-white">
+      {children}
+    </main>
+  );
 }

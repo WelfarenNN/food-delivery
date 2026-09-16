@@ -57,7 +57,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.push("/")
+      router.push("/admin");
     } catch (error) {
       const message = error.response?.data?.message;
 
@@ -109,10 +109,8 @@ export default function LoginForm() {
               <Input
                 id="email"
                 type="email"
-                autoComplete="email"
-                placeholder="Enter your email"
-                disabled={isSubmitting}
-                aria-invalid={Boolean(errors.email)}
+                className="w-full h-9"
+                placeholder="Enter your email address"
                 {...register("email")}
               />
               <FieldError message={errors.email?.message} />
@@ -124,29 +122,22 @@ export default function LoginForm() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  placeholder="Enter your password"
-                  className="pr-10"
-                  disabled={isSubmitting}
-                  aria-invalid={Boolean(errors.password)}
+                  className="w-full h-9 pr-10"
+                  placeholder="Password"
                   {...register("password")}
                 />
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-0 top-0 h-10 w-10 text-muted-foreground hover:bg-transparent"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
                   ) : (
-                    <Eye className="w-4 h-4" />
+                    <Eye className="h-4 w-4" />
                   )}
-                  <span className="sr-only">
-                    {showPassword ? "Hide password" : "Show password"}
-                  </span>
-                </Button>
+                </button>
               </div>
               <FieldError message={errors.password?.message} />
             </div>
@@ -162,7 +153,7 @@ export default function LoginForm() {
 
             <Button
               type="submit"
-              className="h-10 w-full"
+              className="h-9 w-full hover:bg-[#494949] transition-colors"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Logging in..." : "Log in"}

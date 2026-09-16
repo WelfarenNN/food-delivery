@@ -59,7 +59,7 @@ export default function StepOne({ register, errors, onNext }) {
 
           
         
-            <Button type="button" className="h-10 w-full" onClick={onNext}>
+            <Button type="button" className="h-9 w-full" onClick={onNext}>
               Lets Go!
             </Button>
           </div>

@@ -99,7 +99,7 @@ export default function StepTwo({
               </p>
             )}
 
-            <Button type="submit" className="h-10 w-full">
+            <Button type="submit" className="h-9 w-full">
               Lets go
             </Button>
           </form>
