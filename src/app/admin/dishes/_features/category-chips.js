@@ -13,7 +13,6 @@ export default function CategoryChips({
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Safely calculate the quantity mapping per distinct category database ID
   const getCategoryCount = (categoryId) => {
     return allDishes.filter((dish) => dish.category?._id === categoryId).length;
   };
@@ -25,7 +24,6 @@ export default function CategoryChips({
       </div>
 
       <div className="flex flex-wrap items-center gap-3 overflow-x-auto pb-2">
-        {/* ALL DISHES CHIP (No-Filter State) */}
         <button
           onClick={() => onSelectCategory(null)}
           className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-all ${
@@ -46,7 +44,6 @@ export default function CategoryChips({
           </span>
         </button>
 
-        {/* DYNAMIC CATEGORY CHIPS */}
         {categories.map((cat) => {
           const isSelected = selectedCategory === cat._id;
           const count = getCategoryCount(cat._id);
@@ -75,7 +72,6 @@ export default function CategoryChips({
           );
         })}
 
-        {/* RED PLUS ACTION BUTTON */}
         <button
           onClick={() => setIsDialogOpen(true)}
           className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full shadow transition-colors flex items-center justify-center"
@@ -85,7 +81,6 @@ export default function CategoryChips({
         </button>
       </div>
 
-      {/* CREATE MODAL PORTAL */}
       <AddCategoryDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}

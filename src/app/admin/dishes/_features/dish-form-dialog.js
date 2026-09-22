@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { server } from "@/app/_api/api";
-import { X } from "lucide-react";
-import { toast } from "sonner"; // 1. ЗӨВХӨН ЭНД ТОАСТ ИМПОРТЛОНО
+import { toast } from "sonner";
 
 export default function AddCategoryDialog({ isOpen, onClose, onSuccess }) {
   const [categoryName, setCategoryName] = useState("");
@@ -20,18 +19,20 @@ export default function AddCategoryDialog({ isOpen, onClose, onSuccess }) {
     setErrorMessage("");
 
     try {
-      await server.post("/food-category/create", { categoryName: categoryName.trim() });
-      
-      // 2. ЗАСАХ: Хуучин alert-ийг устгаж, зөвхөн гоёмсог тоаст харуулна
+      await server.post("/food-category/create", {
+        categoryName: categoryName.trim(),
+      });
+
       toast.success(`Category "${categoryName}" created successfully!`);
-      
+
       setCategoryName("");
       onSuccess();
       onClose();
     } catch (error) {
       console.error("Create category error:", error);
       setErrorMessage(
-        error.response?.data?.message || "Failed to create category. Please try again."
+        error.response?.data?.message ||
+          "Failed to create category. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -39,9 +40,6 @@ export default function AddCategoryDialog({ isOpen, onClose, onSuccess }) {
   };
 
   return (
-    // ... ТАНЫ ХУУЧИН RETURN ДОТОРХ UI ДИЗАЙН ХЭВЭЭРЭЭ ҮЛДЭНЭ ...
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-       {/* Модал доторх код */}
-    </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"></div>
   );
 }

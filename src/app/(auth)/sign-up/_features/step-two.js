@@ -40,7 +40,6 @@ export default function StepTwo({
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
-            {/* УТАСНЫ ДУГААР ТАЛБАР */}
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number</Label>
               <Input
@@ -57,7 +56,6 @@ export default function StepTwo({
               )}
             </div>
 
-            {/* ХАЯГ ТАЛБАР */}
             <div className="space-y-2">
               <Label htmlFor="address">Address</Label>
               <Input
@@ -74,7 +72,6 @@ export default function StepTwo({
               )}
             </div>
 
-            {/* НУУЦ ҮГ ТАЛБАР */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -91,7 +88,6 @@ export default function StepTwo({
               )}
             </div>
 
-            {/* НУУЦ ҮГ БАТАЛГААЖУУЛАХ */}
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <Input

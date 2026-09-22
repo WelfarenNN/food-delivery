@@ -58,7 +58,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.push("/admin/dishes");
+      router.push("/admin/food-menu");
     } catch (error) {
       const message = error.response?.data?.message;
 

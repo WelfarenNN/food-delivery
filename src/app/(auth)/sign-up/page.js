@@ -11,7 +11,6 @@ import { server } from "@/app/_api/api";
 import StepOne from "./_features/step-one";
 import StepTwo from "./_features/step-two";
 
-// 1. Zod Schema-д шинэ талбаруудыг нэмэв
 const signupSchema = z
   .object({
     name: z.string().trim().min(1, "Name is required"),
@@ -31,13 +30,13 @@ const signupSchema = z
       .string()
       .trim()
       .min(8, "Password must be at least 8 characters long")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter") 
-      .regex(/[a-z]/, "Password must contain at least one lowercase letter") 
-      .regex(/[0-9]/, "Password must contain at least one number") 
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number")
       .regex(
         /[^A-Za-z0-9]/,
         "Password must contain at least one special character (@, $, !, %, etc.)",
-      ), 
+      ),
 
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
@@ -69,7 +68,6 @@ export default function SignUpPage() {
     },
   });
 
-  // Step 1-ээс Step 2 руу шилжихдээ 'name' болон 'email'-ийг шалгана
   const nextStep = async () => {
     const isValid = await trigger(["name", "email"]);
 
@@ -85,7 +83,6 @@ export default function SignUpPage() {
     const { confirmPassword, ...signupData } = data;
 
     try {
-      // Одоо signupData дотор name, email, phone, address, password бүгд бэкенд рүү илгээгдэнэ
       await server.post("/auth/sign-up", signupData);
 
       router.push("/login");
