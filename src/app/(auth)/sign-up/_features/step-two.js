@@ -18,6 +18,7 @@ export default function StepTwo({
   serverError,
 }) {
   const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="flex min-h-screen">
       <div className="flex w-full items-center justify-center px-6 lg:w-1/2">
@@ -32,16 +33,50 @@ export default function StepTwo({
             <ChevronLeft size={18} />
           </Button>
 
-          <h1 className="text-2xl font-bold">Create a strong password</h1>
+          <h1 className="text-2xl font-bold">Complete your profile</h1>
 
           <p className="mt-2 text-sm text-muted-foreground">
-            Create a strong password with letters, numbers.
+            Enter your contact details and create a strong password.
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
+            {/* УТАСНЫ ДУГААР ТАЛБАР */}
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                id="phone"
+                type="text"
+                placeholder="Enter your phone number"
+                {...register("phone")}
+                className={errors.phone ? "border-destructive" : ""}
+              />
+              {errors.phone && (
+                <p className="text-sm text-destructive">
+                  {errors.phone.message}
+                </p>
+              )}
+            </div>
+
+            {/* ХАЯГ ТАЛБАР */}
+            <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Input
+                id="address"
+                type="text"
+                placeholder="Enter your delivery address"
+                {...register("address")}
+                className={errors.address ? "border-destructive" : ""}
+              />
+              {errors.address && (
+                <p className="text-sm text-destructive">
+                  {errors.address.message}
+                </p>
+              )}
+            </div>
+
+            {/* НУУЦ ҮГ ТАЛБАР */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -49,16 +84,16 @@ export default function StepTwo({
                 {...register("password")}
                 className={errors.password ? "border-destructive" : ""}
               />
-
               {errors.password && (
                 <p className="text-sm text-destructive">
                   {errors.password.message}
                 </p>
               )}
             </div>
+
+            {/* НУУЦ ҮГ БАТАЛГААЖУУЛАХ */}
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
-
               <Input
                 id="confirmPassword"
                 type={showPassword ? "text" : "password"}
@@ -70,13 +105,13 @@ export default function StepTwo({
                     : ""
                 }
               />
-
               {errors.confirmPassword && (
                 <p className="text-sm text-destructive">
                   {errors.confirmPassword.message}
                 </p>
               )}
             </div>
+
             <div className="flex items-center gap-2">
               <Checkbox
                 id="show-password"
@@ -84,7 +119,6 @@ export default function StepTwo({
                 onCheckedChange={(checked) => setShowPassword(checked === true)}
                 className="rounded-sm border border-input"
               />
-
               <Label htmlFor="show-password" className="font-normal">
                 Show password
               </Label>

@@ -20,7 +20,8 @@ const loginSchema = z.object({
     .string()
     .trim()
     .min(1, "Email is required")
-    .email("Please enter a valid email"),
+    .email("Please enter a valid email")
+    .regex(/\.(com|mn)$/, "Email must end with .com or .mn"),
 
   password: z.string().trim().min(6, "Incorrect password. Please try again."),
 });
@@ -57,7 +58,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.push("/admin");
+      router.push("/admin/dishes");
     } catch (error) {
       const message = error.response?.data?.message;
 

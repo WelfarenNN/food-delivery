@@ -1,20 +1,15 @@
 "use client";
 
-
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-
 export default function StepOne({ register, errors, onNext }) {
   const router = useRouter();
-
-  
 
   return (
     <div className="flex min-h-screen">
@@ -24,12 +19,11 @@ export default function StepOne({ register, errors, onNext }) {
             type="button"
             variant="outline"
             size="icon"
-            className="rounded size-4"
+            className="rounded size-4 mb-4"
             onClick={() => router.back()}
           >
             <ChevronLeft size={18} />
           </Button>
-
 
           <h1 className="text-2xl font-bold">Create an account</h1>
 
@@ -38,10 +32,26 @@ export default function StepOne({ register, errors, onNext }) {
           </p>
 
           <div className="mt-8 space-y-4">
-           
+            {/* НЭР НЭМЭХ ТАЛБАР */}
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Enter your full name"
+                {...register("name")}
+                className={errors.name ? "border-destructive" : ""}
+              />
+              {errors.name && (
+                <p className="text-sm text-destructive">
+                  {errors.name.message}
+                </p>
+              )}
+            </div>
+
+            {/* ИМЭЙЛ ТАЛБАР */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-
               <Input
                 id="email"
                 type="email"
@@ -49,7 +59,6 @@ export default function StepOne({ register, errors, onNext }) {
                 {...register("email")}
                 className={errors.email ? "border-destructive" : ""}
               />
-
               {errors.email && (
                 <p className="text-sm text-destructive">
                   {errors.email.message}
@@ -57,8 +66,6 @@ export default function StepOne({ register, errors, onNext }) {
               )}
             </div>
 
-          
-        
             <Button type="button" className="h-9 w-full" onClick={onNext}>
               Lets Go!
             </Button>
