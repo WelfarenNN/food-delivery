@@ -84,6 +84,8 @@ export default function SignUpPage() {
 
     try {
       await server.post("/auth/sign-up", signupData);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       router.push("/login");
     } catch (error) {

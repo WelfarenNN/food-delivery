@@ -19,14 +19,14 @@ const getFoods = async (categoryId) => {
 export default function FoodMenuPage() {
   const [categories, setCategories] = useState([]);
   const [dishes, setDishes] = useState([]);
-  const [allDishesForCount, setAllDishesForCount] = useState([]); 
+  const [allDishesForCount, setAllDishesForCount] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const fetchInitialData = async () => {
     try {
       const [catData, dishData] = await Promise.all([
         getFoodCategory(),
-        getFoods(null), 
+        getFoods(null),
       ]);
       setCategories(catData);
       setAllDishesForCount(dishData);
@@ -36,7 +36,6 @@ export default function FoodMenuPage() {
     }
   };
 
-  
   useEffect(() => {
     getFoods(selectedCategory)
       .then((dishData) => setDishes(dishData))
@@ -44,6 +43,7 @@ export default function FoodMenuPage() {
   }, [selectedCategory]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchInitialData();
   }, []);
 
@@ -67,7 +67,7 @@ export default function FoodMenuPage() {
         allDishes={allDishesForCount}
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
-        onCategoryCreated={fetchInitialData} 
+        onCategoryCreated={fetchInitialData}
       />
       <DishGrid dishes={dishes} onDelete={handleDeleteFood} />
     </div>
