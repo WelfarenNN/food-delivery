@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldError } from "../_components/field-error";
-import { server } from "@/app/_api/api";
+import { server } from "@/app/(auth)/_api/api";
 
 const loginSchema = z.object({
   email: z

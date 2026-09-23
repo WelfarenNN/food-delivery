@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { server } from "@/app/_api/api";
-import CategoryChips from "../dishes/_features/category-chips";
+import { server } from "@/app/(auth)/_api/api";
+import CategoryChips from "./_features/category-chips";
 import DishGrid from "../dishes/_features/dish-grid";
+import DishCard from "../_components/dishcard";
 
 const getFoodCategory = async () => {
   const response = await server.get("/food-category/get");

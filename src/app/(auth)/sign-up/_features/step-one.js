@@ -32,7 +32,6 @@ export default function StepOne({ register, errors, onNext }) {
           </p>
 
           <div className="mt-8 space-y-4">
-            {/* НЭР НЭМЭХ ТАЛБАР */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
               <Input
@@ -49,7 +48,6 @@ export default function StepOne({ register, errors, onNext }) {
               )}
             </div>
 
-            {/* ИМЭЙЛ ТАЛБАР */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input

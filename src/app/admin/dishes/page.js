@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { server } from "@/app/_api/api";
+import { server } from "@/app/(auth)/_api/api";
 import { useRouter } from "next/navigation";
 import CategorySidebar from "./_features/category-sidebar";
 import DishGrid from "./_features/dish-grid";

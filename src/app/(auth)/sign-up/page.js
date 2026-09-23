@@ -6,10 +6,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { server } from "@/app/_api/api";
+import { server } from "@/app/(auth)/_api/api";
 
 import StepOne from "./_features/step-one";
 import StepTwo from "./_features/step-two";
+import { useAuth } from "@/(providers)/auth-provider";
 
 const signupSchema = z
   .object({
@@ -74,7 +75,18 @@ export default function SignUpPage() {
     if (!isValid) return;
 
     setServerError("");
-    setStep(2);
+    try {
+      const response = await server.post("/auth/sign-up", signupData);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      if (response.status === 200) {
+        setStep(2);
+      }
+    } catch (error) {
+      setServerError(
+        error.response?.data?.message || "Signup failed. Please try again.",
+      );
+    }
   };
 
   const onSubmit = async (data) => {
@@ -83,7 +95,7 @@ export default function SignUpPage() {
     const { confirmPassword, ...signupData } = data;
 
     try {
-      await server.post("/auth/sign-up", signupData);
+      const response = await server.post("/auth/sign-up", signupData);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
@@ -95,10 +107,17 @@ export default function SignUpPage() {
     }
   };
 
+  const { user } = useAuth();
+
   return (
     <>
       {step === 1 && (
-        <StepOne register={register} errors={errors} onNext={nextStep} />
+        <StepOne
+          register={register}
+          errors={errors}
+          onBack={() => router.push("/login")}
+          onNext={nextStep}
+        />
       )}
 
       {step === 2 && (

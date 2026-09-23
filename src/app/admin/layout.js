@@ -2,6 +2,7 @@
 
 import SideBar from "./_components/sidebar";
 import { User } from "lucide-react";
+import { Toaster } from "sonner";
 
 export default function AdminLayout({ children }) {
   return (
@@ -17,6 +18,8 @@ export default function AdminLayout({ children }) {
 
         <main className="flex-1 px-10 pb-10 overflow-y-auto">{children}</main>
       </div>
+
+      <Toaster position="top-right" richColors />
     </div>
   );
 }
