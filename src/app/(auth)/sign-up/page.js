@@ -51,11 +51,13 @@ export default function SignUpPage() {
 
   const [step, setStep] = useState(1);
   const [serverError, setServerError] = useState("");
+  const { signUpContext } = useAuth();
 
   const {
     register,
     handleSubmit,
     trigger,
+    setError, 
     formState: { errors },
   } = useForm({
     resolver: zodResolver(signupSchema),
@@ -75,18 +77,7 @@ export default function SignUpPage() {
     if (!isValid) return;
 
     setServerError("");
-    try {
-      const response = await server.post("/auth/sign-up", signupData);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      if (response.status === 200) {
-        setStep(2);
-      }
-    } catch (error) {
-      setServerError(
-        error.response?.data?.message || "Signup failed. Please try again.",
-      );
-    }
+    setStep(2); 
   };
 
   const onSubmit = async (data) => {
@@ -96,18 +87,23 @@ export default function SignUpPage() {
 
     try {
       const response = await server.post("/auth/sign-up", signupData);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
 
+      signUpContext(response.data);
       router.push("/login");
     } catch (error) {
-      setServerError(
-        error.response?.data?.message || "Signup failed. Please try again.",
-      );
+      const errorMsg = error.response?.data?.message || "Signup failed. Please try again.";
+      
+      if (errorMsg.toLowerCase().includes("email")) {
+        setStep(1); 
+        setError("email", {
+          type: "manual",
+          message: errorMsg,
+        });
+      } else {
+        setServerError(errorMsg);
+      }
     }
   };
-
-  const { user } = useAuth();
 
   return (
     <>

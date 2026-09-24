@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldError } from "../_components/field-error";
 import { server } from "@/app/(auth)/_api/api";
+import { useAuth } from "@/(providers)/auth-provider";
 
 const loginSchema = z.object({
   email: z
@@ -30,7 +31,7 @@ export default function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState("");
-
+  const { loginContext } = useAuth();
   const {
     register,
     handleSubmit,
@@ -57,6 +58,7 @@ export default function LoginForm() {
         setServerError("Unexpected server response");
         return;
       }
+      loginContext(response.data);
 
       router.push("/admin/food-menu");
     } catch (error) {
